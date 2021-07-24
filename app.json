@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "InputPedia",
+    "slug": "InputPedia",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "InputPedia"
+}
