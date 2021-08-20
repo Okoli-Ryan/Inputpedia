@@ -1,43 +1,42 @@
 export const topics = [
   {
-    text: "Amala",
+    name: "Amala",
     completed: true,
-    category: "food"
+    category: "food",
   },
   {
-    text: "Eba",
+    name: "Eba",
     completed: true,
-    category: "food"
+    category: "food",
   },
   {
-    text: "Buhari",
+    name: "Buhari",
     completed: false,
-    category: "people"
+    category: "people",
   },
   {
-    text: "mountain",
+    name: "mountain",
     completed: false,
-    category: "landscape"
+    category: "landscape",
   },
   {
-    text: "marriage",
+    name: "marriage",
     completed: true,
-    category: "customs"
-
+    category: "customs",
   },
   {
-    text: "fish",
+    name: "fish",
     completed: false,
-    category: "food"
+    category: "food",
   },
   {
-    text: "eke market day",
+    name: "eke market day",
     completed: true,
-    category: "customs"
+    category: "customs",
   },
   {
-    text: "wole soyinka",
+    name: "wole soyinka",
     completed: true,
-    category: "people"
+    category: "people",
   },
 ];

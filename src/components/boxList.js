@@ -1,7 +1,8 @@
 //import liraries
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import Box from "./box";
+import TopicBox from "./topicBox";
 
 // create a component
 const BoxList = ({ items, onPress }) => {
@@ -9,29 +10,15 @@ const BoxList = ({ items, onPress }) => {
     <FlatList
       data={items}
       contentContainerStyle={{
-        marginRight: -10,
+        marginRight: 16,
         marginLeft: 16,
       }}
       renderItem={({ item }) => (
-        <>
-          <View style={styles.container}>
-            <Box
-              border={false}
-              text={item.text}
-              completed={item.completed}
-              onPress={() => onPress(item.text)}
-            />
-          </View>
-          <Text
-            style={[
-              item.completed ? { color: "green" } : { color: "red" },
-              styles.text,
-            ]}>
-            {item.completed ? "completed" : "incomplete"}
-          </Text>
-        </>
+        <View style={styles.container}>
+          <Box border={false} text={item.name} onPress={() => onPress(item)} />
+        </View>
       )}
-      keyExtractor={(item) => item.text}
+      keyExtractor={(item) => item.name}
     />
   );
 };
@@ -39,8 +26,9 @@ const BoxList = ({ items, onPress }) => {
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    width: "75%",
+    width: "78%",
     borderRadius: 10,
+    marginVertical: 8,
     borderWidth: 0.5,
     height: 60,
     justifyContent: "center",
@@ -51,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    marginTop: 5,
+    marginTop: 3,
     marginBottom: 10,
   },
 });

@@ -3,20 +3,28 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 // create a component
-const TranslateBox = ({ label, children }) => {
+const TranslateBox = ({ label, children, exStyle }) => {
   return (
-    <View style={styles.container}>
-      <Text style={{ marginBottom: 0, fontFamily: "Poppins_medium" }}>
+    <View style={[styles.container]}>
+      <Text
+        style={{
+          marginBottom: 0,
+          fontFamily: "Poppins_medium",
+          color: "#264653",
+        }}>
         {label}
       </Text>
       <View
-        style={{
-          width: "100%",
-          elevation: 3,
-          height: "100%",
-          padding: 16,
-          borderWidth: 0,
-        }}>
+        style={[
+          {
+            flex: 1,
+            elevation: 1,
+            height: 300,
+            padding: 16,
+            borderWidth: 0,
+          },
+          exStyle,
+        ]}>
         {children}
       </View>
     </View>
@@ -27,7 +35,7 @@ const TranslateBox = ({ label, children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 16,
+    paddingTop: 8,
   },
 });
 

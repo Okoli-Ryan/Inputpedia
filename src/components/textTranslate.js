@@ -1,44 +1,90 @@
 //import liraries
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import Button from "./Button";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setData, setModal } from "../store/actions";
 import TBox from "./translateBox";
+import { Db } from "../firebase";
+import NetInfo from "@react-native-community/netinfo";
 
 // create a component
 const TextTranslate = ({ navigation, route }) => {
-  const lang = useSelector((state) => state);
-  // const getLanguage = () => {
-  //   console.log("w");
-  // };
+  const lang = useSelector((state) => state.languageReducer);
+  const topic = useSelector((state) => state.topicReducer);
+  const dispatch = useDispatch();
+  const [text, setText] = useState("");
+  const [englishText, setEnglishText] = useState({ text: "", loading: true });
+
+  useEffect(() => {
+    if (lang !== "English") {
+      try {
+        NetInfo.fetch().then((state) => {
+          if (state.isInternetReachable) {
+            Db.collection("data")
+              .doc("documents")
+              .get()
+              .then((doc) => {
+                setEnglishText({
+                  text: doc.data()[`${topic.category}`][`${topic.name}`]
+                    .English,
+                  loading: false,
+                });
+              });
+          } else {
+            dispatch(setModal({ type: "error", display: true }));
+          }
+        });
+      } catch (e) {
+        dispatch(setModal({ type: "error", display: true }));
+      }
+    }
+  }, [topic, lang]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <TBox label="English">
+      <View style={{ width: "100%" }}>
         <ScrollView>
-          <Text style={{ lineHeight: 30 }}>
-            Àmàlà is a local indigenous Nigerian food, native to the Yoruba
-            ethnic group. It is made out of yam and/or cassava flour, or unripe
-            plantain flour. Yams are peeled, sliced, cleaned, dried and then
-            blended into a flour, also called èlùbọ́. Yams are white in colour
-            but turn brown when dried It could be served with a variety of
-            soups, such as ẹ̀fọ́, ilá, ewédú, ogbono or gbẹ̀gìrì.
-          </Text>
+          {lang !== "English" && (
+            <TBox label="English" exStyle={{ height: "auto" }}>
+              {englishText.loading ? (
+                <ActivityIndicator size="large" color="#264653" />
+              ) : (
+                <Text style={{ lineHeight: 30, fontFamily: "Poppins" }}>
+                  {englishText.text}
+                </Text>
+              )}
+            </TBox>
+          )}
+          <TBox label={lang} exStyle={{ height: "auto" }}>
+            <TextInput
+              multiline
+              style={{ lineHeight: 30, fontFamily: "Poppins", width: "100%" }}
+              placeholder="Type your translated sentence here"
+              onChangeText={(e) => setText(e)}
+              value={text}
+            />
+          </TBox>
+          <View style={{ width: "100%" }}>
+            <Button
+              text="Continue"
+              disabled={!text}
+              exStyles={{ marginVertical: 16 }}
+              onPress={() => {
+                dispatch(setData({ type: "text", data: text }));
+                navigation.navigate("record");
+              }}
+            />
+          </View>
         </ScrollView>
-      </TBox>
-      <TBox label={lang}>
-        <ScrollView>
-          <Text style={{ lineHeight: 30 }}>
-            Àmàlà is a local indigenous Nigerian food, native to the Yoruba
-            ethnic group. It is made out of yam and/or cassava flour, or unripe
-            plantain flour. Yams are peeled, sliced, cleaned, dried and then
-            blended into a flour, also called èlùbọ́. Yams are white in colour
-            but turn brown when dried It could be served with a variety of
-            soups, such as ẹ̀fọ́, ilá, ewédú, ogbono or gbẹ̀gìrì.
-          </Text>
-        </ScrollView>
-      </TBox>
-      <View style={{ marginVertical: 16, width: "100%" }}>
-        <Button text="Continue" disabled={false} />
       </View>
     </SafeAreaView>
   );
@@ -48,10 +94,11 @@ const TextTranslate = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#f9f8f8",
-    padding: 16,
+    paddingHorizontal: 16,
+    // width: "100%",
   },
 });
 

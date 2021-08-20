@@ -20,16 +20,17 @@ const IndexScreen = ({ navigation }) => {
 
   const handleSetLanguage = () => {
     dispatch(setLang(value.selected));
-    navigation.navigate("topic");
+    if (value.selected === "English") navigation.navigate("english");
+    else navigation.navigate("topic");
   };
 
   return (
     <>
       <View style={styles.mainContainer}>
-        {/* <StatusBar backgroundColor="black" /> */}
         <Text style={styles.caption}>
           What language do you want to translate to?
         </Text>
+
         <View style={styles.container}>
           <Box
             border={false}
@@ -75,6 +76,25 @@ const IndexScreen = ({ navigation }) => {
           exStyles={{ alignSelf: "center" }}
           textStyle={value.selected ? {} : { opacity: 0.5 }}
           disabled={!value.selected}
+        />
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          top: 30,
+          right: 0,
+        }}>
+        <Button
+          exStyles={{ width: 30, height: 30, backgroundColor: "#f9f8f8" }}
+          onLongPress={() =>
+            setValue((prev) => {
+              return {
+                ...prev,
+                drop: false,
+                selected: "English",
+              };
+            })
+          }
         />
       </View>
     </>

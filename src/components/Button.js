@@ -1,16 +1,51 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
 // create a component
-const Button = ({ onPress, exStyles, text, disabled, textStyle }) => {
+const Button = ({
+  onPress,
+  exStyles,
+  text,
+  disabled,
+  textStyle,
+  onLongPress,
+  loading,
+}) => {
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled}>
-      <View style={[styles.container, { ...exStyles }]}>
-        <Text style={[styles.text, textStyle]}>{text}</Text>
-      </View>
-    </TouchableOpacity>
+    <>
+      {!loading ? (
+        <TouchableOpacity
+          onPress={onPress}
+          disabled={disabled}
+          onLongPress={onLongPress}>
+          <View
+            style={[
+              styles.container,
+              { ...exStyles },
+              disabled && { opacity: 0.5 },
+            ]}>
+            <Text style={[styles.text, textStyle]}>{text}</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <View
+          style={[
+            styles.container,
+            { ...exStyles },
+            disabled && { opacity: 0.5 },
+          ]}>
+          <ActivityIndicator size="small" color="white" />
+        </View>
+      )}
+    </>
   );
 };
 

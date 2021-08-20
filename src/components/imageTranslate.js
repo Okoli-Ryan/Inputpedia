@@ -11,14 +11,16 @@ import {
   Platform,
 } from "react-native";
 import Button from "./Button";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setData } from "../store/actions";
 import TBox from "./translateBox";
 import * as ImagePicker from "expo-image-picker";
 import CameraIcon from "../assets/images/camera.png";
 
 // create a component
 const ImageTranslate = ({ navigation, route }) => {
-  const lang = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const lang = useSelector((state) => state.languageReducer);
 
   const [image, setImage] = useState(null);
 
@@ -63,7 +65,7 @@ const ImageTranslate = ({ navigation, route }) => {
               style={{
                 resizeMode: "cover",
                 width: 300,
-                height: 300,
+                height: 400,
               }}
             />
           )}
@@ -82,7 +84,14 @@ const ImageTranslate = ({ navigation, route }) => {
         </ScrollView>
       </TBox> */}
       <View style={{ marginVertical: 16, width: "100%" }}>
-        <Button text="Continue" disabled={false} />
+        <Button
+          text="Continue"
+          disabled={!image}
+          onPress={() => {
+            dispatch(setData({ type: "image", data: image }));
+            navigation.navigate("record");
+          }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -95,7 +104,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f9f8f8",
-    padding: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   text: {
     fontFamily: "Poppins",
