@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.inputpedia",
+    package = "com.Naijapedia.Inputpedia",
 )
 
 android_resource(
     name = "res",
-    package = "com.inputpedia",
+    package = "com.Naijapedia.Inputpedia",
     res = "src/main/res",
 )
 

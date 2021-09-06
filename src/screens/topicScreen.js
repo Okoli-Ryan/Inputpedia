@@ -73,8 +73,10 @@ const TopicScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {loading ? (
         <ActivityIndicator color="#264653" size="large" />
-      ) : (
+      ) : topics.length !== 0 ? (
         <BoxList items={topics} onPress={onPress} />
+      ) : (
+        <></>
       )}
       {isFocused && <Modal />}
     </SafeAreaView>
