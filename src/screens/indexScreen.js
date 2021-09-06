@@ -85,7 +85,7 @@ const IndexScreen = ({ navigation }) => {
           right: 0,
         }}>
         <Button
-          exStyles={{ width: 30, height: 30, backgroundColor: "#f9f8f8" }}
+          exStyles={{ width: 40, height: 40, backgroundColor: "#f9f8f8" }}
           onLongPress={() =>
             setValue((prev) => {
               return {
