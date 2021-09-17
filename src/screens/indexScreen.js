@@ -81,7 +81,7 @@ const IndexScreen = ({ navigation }) => {
       <View
         style={{
           position: "absolute",
-          top: 30,
+          bottom: 0,
           right: 0,
         }}>
         <Button
