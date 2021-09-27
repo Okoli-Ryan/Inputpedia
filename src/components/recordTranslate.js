@@ -14,7 +14,7 @@ import TBox from "./translateBox";
 import RecordComponent from "./recordComp";
 import Modal from "./modal";
 import { upload, deleteSound } from "./functions/record";
-import { setModal } from "../store/actions";
+import { setModal, removeModal } from "../store/actions";
 // create a component
 const RecordTranslate = ({ goBack }) => {
   const dispatch = useDispatch();
@@ -35,7 +35,10 @@ const RecordTranslate = ({ goBack }) => {
             topic,
             recording,
             `${lang}_${topic.category}_${topic.name}`,
-            goBack,
+            () => {
+              dispatch(removeModal());
+              goBack();
+            },
             () => dispatch(setModal({ type: "error", display: true }))
           );
         }}

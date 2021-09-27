@@ -29,7 +29,7 @@ const TopicScreen = ({ navigation }) => {
       let subscriber = () => {};
       NetInfo.fetch()
         .then((state) => {
-          if (state.isInternetReachable) {
+          if (state.isConnected) {
             subscriber = Db.collection("data")
               .doc(`topics_${lang}`)
               .onSnapshot((snapshot) => {

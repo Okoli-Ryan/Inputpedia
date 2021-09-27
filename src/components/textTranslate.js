@@ -28,7 +28,7 @@ const TextTranslate = ({ navigation, route }) => {
     if (lang !== "English") {
       try {
         NetInfo.fetch().then((state) => {
-          if (state.isInternetReachable) {
+          if (state.isConnected) {
             Db.collection("data")
               .doc("documents")
               .get()

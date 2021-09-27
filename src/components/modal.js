@@ -62,7 +62,7 @@ const SaveData = (props) => {
 
   const startSaving = () => {
     NetInfo.fetch().then((state) => {
-      if (state.isInternetReachable) {
+      if (state.isConnected) {
         setLoading(true);
         props.save();
       } else {

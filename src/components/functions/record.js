@@ -244,7 +244,8 @@ export const upload = async (
       uploadAudio(recording, filename),
       uploadData(params, lang, topic),
       removeFromList(lang, topic),
-    ]).then(() => cb());
+    ]);
+    cb();
   } catch (e) {
     er();
     console.log(e);
