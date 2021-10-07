@@ -21,6 +21,7 @@ import CameraIcon from "../assets/images/camera.png";
 const ImageTranslate = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const lang = useSelector((state) => state.languageReducer);
+  const topic = useSelector((state) => state.topicReducer);
 
   const [image, setImage] = useState(null);
 

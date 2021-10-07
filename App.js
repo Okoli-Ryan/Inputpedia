@@ -1,6 +1,6 @@
 //import liraries
 import "react-native-gesture-handler";
-import React, { Component } from "react";
+import React from "react";
 import { View } from "react-native";
 import IScreen from "./src/screens/indexScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -11,8 +11,9 @@ import EnglishScreen from "./src/screens/inputEnglishScreen";
 import HeaderLeft from "./src/components/headerLeft";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import store from "./src/store/configureStore";
+import { store, persistor } from "./src/store/configureStore";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import Header from "./src/components/header";
 import { useFonts } from "expo-font";
 
@@ -30,78 +31,80 @@ const App = () => {
   } else {
     return (
       <Provider store={store}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <Navigator
-              screenOptions={{
-                orientation: "portrait",
-              }}>
-              <Screen
-                options={{
-                  headerShown: false,
-                }}
-                name="index"
-                component={IScreen}
-              />
-              <Screen
-                options={({ navigation, route }) => ({
-                  headerBackVisible: false,
-                  headerLeft: (props) => (
-                    <HeaderLeft {...props} navigation={navigation} />
-                  ),
-                  headerTitle: (props) => <Header {...props} />,
-                  headerStyle: {
-                    elevation: 0,
-                  },
-                })}
-                name="topic"
-                component={TopicScreen}
-              />
-              <Screen
-                options={({ navigation, route }) => ({
-                  headerBackVisible: false,
-                  headerLeft: (props) => (
-                    <HeaderLeft {...props} navigation={navigation} />
-                  ),
-                  headerTitle: (props) => <Header {...props} />,
-                  headerStyle: {
-                    elevation: 0,
-                  },
-                })}
-                name="translate"
-                component={TranslateScreen}
-              />
-              <Screen
-                options={({ navigation, route }) => ({
-                  headerBackVisible: false,
-                  headerLeft: (props) => (
-                    <HeaderLeft {...props} navigation={navigation} />
-                  ),
-                  headerTitle: (props) => <Header {...props} />,
-                  headerStyle: {
-                    elevation: 0,
-                  },
-                })}
-                name="record"
-                component={RecordScreen}
-              />
-              <Screen
-                options={({ navigation, route }) => ({
-                  headerBackVisible: false,
-                  headerLeft: (props) => (
-                    <HeaderLeft {...props} navigation={navigation} />
-                  ),
-                  headerTitle: (props) => <Header {...props} />,
-                  headerStyle: {
-                    elevation: 0,
-                  },
-                })}
-                name="english"
-                component={EnglishScreen}
-              />
-            </Navigator>
-          </NavigationContainer>
-        </SafeAreaProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <Navigator
+                screenOptions={{
+                  orientation: "portrait",
+                }}>
+                <Screen
+                  options={{
+                    headerShown: false,
+                  }}
+                  name="index"
+                  component={IScreen}
+                />
+                <Screen
+                  options={({ navigation, route }) => ({
+                    headerBackVisible: false,
+                    headerLeft: (props) => (
+                      <HeaderLeft {...props} navigation={navigation} />
+                    ),
+                    headerTitle: (props) => <Header {...props} />,
+                    headerStyle: {
+                      elevation: 0,
+                    },
+                  })}
+                  name="topic"
+                  component={TopicScreen}
+                />
+                <Screen
+                  options={({ navigation, route }) => ({
+                    headerBackVisible: false,
+                    headerLeft: (props) => (
+                      <HeaderLeft {...props} navigation={navigation} />
+                    ),
+                    headerTitle: (props) => <Header {...props} />,
+                    headerStyle: {
+                      elevation: 0,
+                    },
+                  })}
+                  name="translate"
+                  component={TranslateScreen}
+                />
+                <Screen
+                  options={({ navigation, route }) => ({
+                    headerBackVisible: false,
+                    headerLeft: (props) => (
+                      <HeaderLeft {...props} navigation={navigation} />
+                    ),
+                    headerTitle: (props) => <Header {...props} />,
+                    headerStyle: {
+                      elevation: 0,
+                    },
+                  })}
+                  name="record"
+                  component={RecordScreen}
+                />
+                <Screen
+                  options={({ navigation, route }) => ({
+                    headerBackVisible: false,
+                    headerLeft: (props) => (
+                      <HeaderLeft {...props} navigation={navigation} />
+                    ),
+                    headerTitle: (props) => <Header {...props} />,
+                    headerStyle: {
+                      elevation: 0,
+                    },
+                  })}
+                  name="english"
+                  component={EnglishScreen}
+                />
+              </Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </PersistGate>
       </Provider>
     );
   }

@@ -1,9 +1,9 @@
 //import liraries
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Box from "../components/box";
 import Arrow from "../assets/images/down-arrow.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLang } from "../store/actions";
 import Button from "../components/Button";
 
@@ -12,6 +12,12 @@ const languages = ["Igbo", "Hausa", "Yoruba"];
 // create a component
 const IndexScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.dataReducer);
+
+  useEffect(() => {
+    if (data && data.type === "text") navigation.replace("translate");
+  }, []);
 
   const [value, setValue] = useState({
     selected: null,

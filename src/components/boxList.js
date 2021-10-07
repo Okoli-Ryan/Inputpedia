@@ -26,7 +26,7 @@ const BoxList = ({ items, onPress }) => {
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    width: "78%",
+    width: "82.7%",
     borderRadius: 10,
     marginVertical: 8,
     borderWidth: 0.5,

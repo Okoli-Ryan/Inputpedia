@@ -12,9 +12,9 @@ function MyTabs({ navigation }) {
 
   const goBack = () => {
     if (lang === "English") {
-      navigation.navigate("english");
+      navigation.replace("english");
     } else {
-      navigation.navigate("topic");
+      navigation.replace("topic");
     }
   };
 

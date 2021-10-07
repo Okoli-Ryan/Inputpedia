@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TextInput,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import Button from "./Button";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,9 +21,27 @@ import NetInfo from "@react-native-community/netinfo";
 const TextTranslate = ({ navigation, route }) => {
   const lang = useSelector((state) => state.languageReducer);
   const topic = useSelector((state) => state.topicReducer);
+  const data = useSelector((state) => state.dataReducer);
   const dispatch = useDispatch();
-  const [text, setText] = useState("");
+  const [text, setText] = useState(data ? data.data : "");
   const [englishText, setEnglishText] = useState({ text: "", loading: true });
+
+  useEffect(() => {
+    function handleBackButton() {
+      if (navigation.canGoBack()) navigation.goBack();
+      else {
+        dispatch(setData(null));
+        navigation.reset({ index: 0, routes: [{ name: "index" }] });
+      }
+      return true;
+    }
+    const backhandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackButton
+    );
+
+    return () => backhandler.remove();
+  }, [navigation]);
 
   useEffect(() => {
     if (lang !== "English") {
@@ -47,7 +66,7 @@ const TextTranslate = ({ navigation, route }) => {
         dispatch(setModal({ type: "error", display: true }));
       }
     }
-  }, [topic, lang]);
+  }, [topic, lang, navigation]);
 
   return (
     <SafeAreaView style={styles.container}>

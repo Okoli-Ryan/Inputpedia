@@ -1,5 +1,5 @@
 //import liraries
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import TBox from "./translateBox";
 import RecordComponent from "./recordComp";
 import Modal from "./modal";
 import { upload, deleteSound } from "./functions/record";
-import { setModal, removeModal } from "../store/actions";
+import { setModal, removeModal, setData } from "../store/actions";
 // create a component
 const RecordTranslate = ({ goBack }) => {
   const dispatch = useDispatch();
@@ -38,6 +38,7 @@ const RecordTranslate = ({ goBack }) => {
             () => {
               dispatch(removeModal());
               goBack();
+              dispatch(setData(null));
             },
             () => dispatch(setModal({ type: "error", display: true }))
           );
@@ -45,7 +46,7 @@ const RecordTranslate = ({ goBack }) => {
         delete={() => deleteSound(sound, setSound, setRecording)}
       />
       <ScrollView>
-        <TBox label={lang} exStyle={{ height: "auto" }}>
+        <TBox label={topic.name} exStyle={{ height: "auto" }}>
           {params.type === "text" ? (
             <Text style={{ lineHeight: 30, fontFamily: "Poppins" }}>
               {params.data}

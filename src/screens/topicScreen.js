@@ -20,8 +20,8 @@ const TopicScreen = ({ navigation }) => {
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const onPress = (data) => {
-    navigation.navigate("translate", { data: data });
     dispatch(setTopic(data));
+    navigation.navigate("translate");
   };
 
   useEffect(() => {
@@ -61,14 +61,14 @@ const TopicScreen = ({ navigation }) => {
     }
   }, [lang]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      dispatch(setTopic({ name: "Select Category" }));
-    });
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", () => {
+  //     dispatch(setTopic({ name: "Select Category" }));
+  //   });
 
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+  //   // Return the function to unsubscribe from the event so it gets removed on unmount
+  //   return unsubscribe;
+  // }, [navigation]);
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
@@ -81,7 +81,7 @@ const TopicScreen = ({ navigation }) => {
       {isFocused && <Modal />}
     </SafeAreaView>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   container: {

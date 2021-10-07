@@ -11,6 +11,7 @@ export const startRecording = async (
   setRecording
 ) => {
   // stop playback
+  setIsRecording(true);
   if (sound !== null) {
     await sound.unloadAsync();
     sound.setOnPlaybackStatusUpdate(null);
@@ -32,7 +33,6 @@ export const startRecording = async (
     // setRecording(_recording);
     await _recording.startAsync();
     console.log("recording");
-    setIsRecording(true);
     setRecording(_recording);
   } catch (error) {
     console.log("error while recording:", error);
@@ -40,6 +40,8 @@ export const startRecording = async (
 };
 
 export const stopRecording = async (recording, setSound, setIsRecording) => {
+  setIsRecording(false);
+
   try {
     await recording.stopAndUnloadAsync();
   } catch (error) {
@@ -47,25 +49,28 @@ export const stopRecording = async (recording, setSound, setIsRecording) => {
   }
   const info = await FileSystem.getInfoAsync(recording.getURI());
   console.log(`FILE INFO: ${JSON.stringify(info)}`);
-  await Audio.setAudioModeAsync({
-    allowsRecordingIOS: false,
-    interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-    playsInSilentModeIOS: true,
-    playsInSilentLockedModeIOS: true,
-    shouldDuckAndroid: true,
-    interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-    playThroughEarpieceAndroid: false,
-    staysActiveInBackground: true,
-  });
-  const { sound: _sound, status } = await recording.createNewLoadedSoundAsync({
-    isLooping: false,
-    isMuted: false,
-    volume: 1.0,
-    rate: 1.0,
-    shouldCorrectPitch: true,
-  });
-  setSound(_sound);
-  setIsRecording(false);
+  try {
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      playsInSilentLockedModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      playThroughEarpieceAndroid: false,
+      staysActiveInBackground: true,
+    });
+    const { sound: _sound, status } = await recording.createNewLoadedSoundAsync(
+      {
+        isLooping: false,
+        isMuted: false,
+        volume: 1.0,
+        rate: 1.0,
+        shouldCorrectPitch: true,
+      }
+    );
+    setSound(_sound);
+  } catch (e) {}
 };
 
 export const playSound = async (sound) => {
@@ -130,6 +135,9 @@ export const uploadAudio = async (recording, filename) => {
     } else {
       console.log("error with blob");
     }
+    return new Promise((resolve) => {
+      resolve();
+    });
   } catch (error) {
     console.log("error:", error);
   }
@@ -173,7 +181,9 @@ const setUpLanguageList = async (topic, category) => {
       )
       .then((_) => console.log(`added ${topic} to Igbo`))
       .catch((e) => console.log(`couldnt create document Yoruba: ${e}`));
-    return new Promise();
+    return new Promise((resolve) => {
+      resolve();
+    });
   } catch (e) {}
 };
 
@@ -209,6 +219,9 @@ const uploadData = async (params, lang, topic) => {
       .then(() => console.log("saved to storage"))
       .catch((e) => console.log("no save to storage: " + e));
   }
+  return new Promise((resolve) => {
+    resolve();
+  });
 };
 
 const removeFromList = (lang, topic) => {
@@ -223,6 +236,9 @@ const removeFromList = (lang, topic) => {
       .then((_) => console.log(`saved to topic_${lang}`))
       .catch((e) => console.log(`couldnt update topic_${lang}: ` + e));
   }
+  return new Promise((resolve) => {
+    resolve();
+  });
 };
 
 export const upload = async (

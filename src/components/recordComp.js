@@ -8,6 +8,7 @@ import {
   playSound,
   pauseSound,
 } from "./functions/record";
+import { useNavigation } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import { setModal } from "../store/actions";
 import Play from "../assets/images/play.png";
@@ -15,19 +16,33 @@ import Trash from "../assets/images/delete.png";
 import TimeComp from "./TimeComp";
 
 // create a component
-const RecordComp = ({ sound, setSound, recording, setRecording }) => {
+const RecordComp = ({
+  sound,
+  setSound,
+  recording,
+  setRecording,
+  // navigation,
+}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const [isRecording, setIsRecording] = useState(false);
+
   useEffect(() => {
     (async () => {
       await Audio.requestPermissionsAsync();
     })();
   }, []);
 
-  const [isRecording, setIsRecording] = useState(false);
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", () => {});
 
-  //   const startRec = () => {
-  //     recording = startRecording(sound, setIsRecording, setSound);
+  //   return () => {
+  //     if (isRecording) stopRecording(recording, setSound, setIsRecording);
+  //     if (sound) pauseSound(sound);
+  //     unsubscribe();
   //   };
+  // }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -53,21 +68,24 @@ const RecordComp = ({ sound, setSound, recording, setRecording }) => {
         )}
 
         {!sound ? (
-          <TouchableOpacity
-            onPress={
-              !recording
-                ? () => {
-                    startRecording(
-                      sound,
-                      setIsRecording,
-                      setSound,
-                      setRecording
-                    );
-                  }
-                : () => stopRecording(recording, setSound, setIsRecording)
-            }>
-            <View style={styles.button}></View>
-          </TouchableOpacity>
+          <>
+            {!isRecording && (
+              <TouchableOpacity
+                onPress={() => {
+                  startRecording(sound, setIsRecording, setSound, setRecording);
+                }}>
+                <View style={styles.button}></View>
+              </TouchableOpacity>
+            )}
+            {isRecording && (
+              <TouchableOpacity
+                onPress={() =>
+                  stopRecording(recording, setSound, setIsRecording)
+                }>
+                <View style={styles.button}></View>
+              </TouchableOpacity>
+            )}
+          </>
         ) : (
           <View style={styles.button_record_done} />
         )}

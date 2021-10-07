@@ -1,18 +1,27 @@
 //import liraries
-import React, { Component } from "react";
+import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import BackArrow from "../assets/images/back-arrow.png";
 import Home from "../assets/images/home.png";
+import { useDispatch } from "react-redux";
+import { setData } from "../store/actions";
 
 // create a component
 const HeaderLeft = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const homeButton = () => {
-    navigation.navigate("index");
+    dispatch(setData(null));
+    navigation.reset({ index: 0, routes: [{ name: "index" }] });
     // console.log(navigation)
   };
 
   const backButton = () => {
-    navigation.goBack();
+    console.log("po");
+    if (navigation.canGoBack()) navigation.goBack();
+    else {
+      homeButton();
+    }
   };
   return (
     <View style={styles.container}>
