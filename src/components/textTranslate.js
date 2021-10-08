@@ -23,7 +23,7 @@ const TextTranslate = ({ navigation, route }) => {
   const topic = useSelector((state) => state.topicReducer);
   const data = useSelector((state) => state.dataReducer);
   const dispatch = useDispatch();
-  const [text, setText] = useState(data ? data.data : "");
+  const [text, setText] = useState(!!data && data.type === "text" ? data.data : "");
   const [englishText, setEnglishText] = useState({ text: "", loading: true });
 
   useEffect(() => {
